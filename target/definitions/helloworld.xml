@@ -13,9 +13,7 @@
     </caseFileItemDefinition>
     <case id="helloworld.case" name="HelloWorld" expressionLanguage="spel">
         <documentation textFormat="text/plain">
-            <text>
-                <![CDATA[Hello World]]>
-            </text>
+            <text><![CDATA[Hello World]]></text>
         </documentation>
         <caseFileModel cafienne:typeRef="helloworld.type">
             <caseFileItem id="Greeting" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.type"/>
@@ -24,10 +22,7 @@
         <casePlanModel id="cm_HelloWorld.case_HelloWorld_0" name="HelloWorld" autoComplete="true">
             <planItem id="cm_csVQy_167" name="Receive Greeting and Send response" definitionRef="ht_cm_csVQy_167">
                 <documentation textFormat="text/plain">
-                    <text>
-                        <![CDATA[Receive Greeting
-and Send response]]>
-                    </text>
+                    <text><![CDATA[Receive Greeting and Send response]]></text>
                 </documentation>
             </planItem>
             <planItem id="cm_cs3hg_196" name="Read response" definitionRef="ht_cm_cs3hg_196">
@@ -38,15 +33,13 @@ and Send response]]>
                     <standardEvent>complete</standardEvent>
                 </planItemOnPart>
             </sentry>
-            <humanTask id="ht_cm_csVQy_167" name="Receive Greeting and Send response" isBlocking="true">
+            <humanTask id="ht_cm_csVQy_167" name="Receive Greeting and Send response" isBlocking="true" performerRef="_nTPPc_20">
                 <inputs id="inTP_cm_cs2F1_174_1" name="Greeting" bindingRef="Greeting"/>
                 <outputs id="outTP_cm_cs2F1_174_1" name="Response" bindingRef="Response"/>
                 <extensionElements mustUnderstand="false">
                     <cafienne:implementation name="SendResponse" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="sendresponse.humantask">
                         <documentation textFormat="text/plain">
-                            <text>
-                                <![CDATA[Sends a response back to the initiator of the hello world case]]>
-                            </text>
+                            <text><![CDATA[Sends a response back to the initiator of the hello world case]]></text>
                         </documentation>
                         <input id="Greeting" name="Greeting"/>
                         <output id="Response" name="Response"/>
@@ -111,40 +104,32 @@ and Send response]]>
 			}
 		}
 	}
-}
-</task-model>
-                        <duedate id="_nTPPc_9">
-                            <condition id="_nTPPc_10">
-                                <body>
-                                    <![CDATA[T(java.time.Instant).now()]]>
-                                </body>
-                            </condition>
-                        </duedate>
-                        <assignment id="_nTPPc_3" contextRef="Greeting">
-                            <condition id="_nTPPc_4">
-                                <body>
-                                    <![CDATA[Greeting.To]]>
-                                </body>
-                            </condition>
-                        </assignment>
+}</task-model>
                         <parameterMapping id="inPM_cm_cshJq_4_0" sourceRef="inTP_cm_cs2F1_174_1" targetRef="Greeting"/>
                         <parameterMapping id="outPM_cm_csuYs_174_0" sourceRef="Response" targetRef="outTP_cm_cs2F1_174_1"/>
+                        <assignment id="_nTPPc_3" contextRef="Greeting">
+                            <condition id="_nTPPc_4">
+                                <body><![CDATA[Greeting.To]]></body>
+                            </condition>
+                        </assignment>
+                        <duedate id="_nTPPc_9">
+                            <condition id="_nTPPc_10">
+                                <body><![CDATA[T(java.time.Instant).now()]]></body>
+                            </condition>
+                        </duedate>
                     </cafienne:implementation>
                 </extensionElements>
             </humanTask>
-            <humanTask id="ht_cm_cs3hg_196" name="Read response" isBlocking="true">
+            <humanTask id="ht_cm_cs3hg_196" name="Read response" isBlocking="true" performerRef="role_csT3f_0">
                 <inputs id="inTP_cm_cs3hg_196_0" name="Response" bindingRef="Response"/>
                 <extensionElements mustUnderstand="false">
                     <cafienne:implementation name="ReadResponse" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="readresponse.humantask">
                         <documentation textFormat="text/plain">
-                            <text>
-                                <![CDATA[Read Response]]>
-                            </text>
+                            <text><![CDATA[Read Response]]></text>
                         </documentation>
                         <input id="Response" name="Response"/>
                         <output id="_MZBR_Greeting" name="Greeting"/>
-                        <task-model>
-			{
+                        <task-model>{
 				"schema": {
 					"title": "Read response",
 					"type": "object",
@@ -180,35 +165,29 @@ and Send response]]>
 						"ui:widget": "textarea"
 					}
 				}
-			}
-		</task-model>
-                        <duedate id="_nTPPc_14">
-                            <condition id="_nTPPc_15">
-                                <body>
-                                    <![CDATA[T(java.time.Instant).now()]]>
-                                </body>
-                            </condition>
-                        </duedate>
+			}</task-model>
+                        <parameterMapping id="inPM_cm_cs3hg_196_0" sourceRef="inTP_cm_cs3hg_196_0" targetRef="Response"/>
                         <assignment id="_nTPPc_12" contextRef="Greeting">
                             <condition id="_nTPPc_13">
-                                <body>
-                                    <![CDATA[Greeting.From]]>
-                                </body>
+                                <body><![CDATA[Greeting.From]]></body>
                             </condition>
                         </assignment>
-                        <parameterMapping id="inPM_cm_cs3hg_196_0" sourceRef="inTP_cm_cs3hg_196_0" targetRef="Response"/>
+                        <duedate id="_nTPPc_14">
+                            <condition id="_nTPPc_15">
+                                <body><![CDATA[T(java.time.Instant).now()]]></body>
+                            </condition>
+                        </duedate>
                     </cafienne:implementation>
                 </extensionElements>
             </humanTask>
         </casePlanModel>
-        <caseRoles>
-            <role id="role_csT3f_0" name="ADMIN">
+        <caseRoles cafienne:caseTeamRef="world.caseteam">
+            <role id="role_csT3f_0" name="Greeter">
                 <documentation textFormat="text/plain">
-                    <text>
-                        <![CDATA[admin of the world]]>
-                    </text>
+                    <text><![CDATA[admin of the case]]></text>
                 </documentation>
             </role>
+            <role id="_nTPPc_20" name="Responder"/>
         </caseRoles>
         <input id="csVQy_inCPs_0" name="Greeting" bindingRef="Greeting"/>
         <extensionElements mustUnderstand="false">
