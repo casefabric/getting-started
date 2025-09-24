@@ -78,7 +78,7 @@ services:
       - case-engine
 
   case-user-interface:
-    image: cafienne/cafienne-ui:latest
+    image: cafienne/cafienne-ui:0.7.3
     labels:
       component: case-user-interface
     networks:
