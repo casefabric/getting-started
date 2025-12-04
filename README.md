@@ -6,7 +6,7 @@ This repository enables you to quickly setup a Case Management demo environment 
 
 The Case Management demo environment consists of a set of Docker images. Make sure you have a running [Docker](https://www.docker.com/) instance available on your system.
 
-Please contact [info@cafienne.io](mailto:info@cafienne.io) for further information and assistence.
+Please contact [info@casefabric.com](mailto:info@casefabric.com) for further information and assistence.
 
 ## Downloading and starting the environment
 
@@ -16,7 +16,7 @@ Alternatively you can download the repository code from GitHub by pressing the g
 
 ``` bash
 # this step puts the code onto your system
-git clone https://github.com/cafienne/getting-started.git
+git clone https://github.com/casefabric/getting-started.git
 
 ```
 
@@ -36,7 +36,7 @@ This way, when Docker environment is stopped, and then started again, the case i
 
 To start with a fresh environment, you'd have to stop the containers and remove the appropriate volumes.
 
-## Exposed URLs of the Cafienne Demo environment
+## Exposed URLs of the CaseFabric Demo environment
 
 After starting up the Case Management demo environment, the following URLs allow you to access the various parts of the
 environment:
@@ -63,5 +63,5 @@ The Case Management demo environment picks up any valid model that is stored in 
 
 The demo environment assumes you have some basic knowledge of Docker to maintain the installation.
 
-If you need help or encounter issues, you can search the [existing repository issues](https://github.com/cafienne/getting-started/issues) or directly [create a new issue](https://github.com/cafienne/getting-started/issues/new).
+If you need help or encounter issues, you can search the [existing repository issues](https://github.com/casefabric/getting-started/issues) or directly [create a new issue](https://github.com/casefabric/getting-started/issues/new).
 
