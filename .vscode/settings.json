@@ -5,4 +5,6 @@
     "mochaExplorer.files": "test/**/*.ts",
     "workbench.colorTheme": "Quiet Light",
     "npm-scripts.showStartNotification": false,
+    "npm.packageManager": "yarn",
+    "typescript.check.npmIsInstalled": false,
 }

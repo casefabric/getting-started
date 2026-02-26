@@ -1,0 +1,7 @@
+<type xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="ConsentGroupTestCase.type" name="ConsentGroupTestCase">
+    <schema>
+        <property id="sp__08eMu_0" name="Mandatory" type="object" multiplicity="ExactlyOne">
+            <schema id="_08eMu_0" name="Schema_0"/>
+        </property>
+    </schema>
+</type>

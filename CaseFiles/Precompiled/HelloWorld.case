@@ -1,9 +1,9 @@
-<case id="HelloWorld.case" name="HelloWorld" expressionLanguage="spel" guid="_rzOCk">
+<case xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="HelloWorld.case" name="HelloWorld" expressionLanguage="spel" guid="_rzOCk">
     <caseFileModel>
         <caseFileItem id="_rzOCk_1" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid"/>
     </caseFileModel>
     <casePlanModel id="cm__rzOCk_0" name="HelloWorld" autoComplete="true">
-        <planItem id="pi_pt__rzOCk_0" name="Calculation" definitionRef="pt__rzOCk_0"/>
-        <processTask id="pt__rzOCk_0" name="Calculation" isBlocking="true" processRef="CalculationProcess.process"/>
+        <processTask id="pi_pt__rzOCk_0" name="Calculation" isBlocking="true" processRef="CalculationProcess.process"/>
     </casePlanModel>
+    <caseRoles/>
 </case>

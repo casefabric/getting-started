@@ -1,0 +1,93 @@
+name: cafienne_pg
+services:
+  test_token_service:
+    image: spectare/fakeidp:latest
+    labels:
+      component: idp-test-service-for-cafienne
+    networks: 
+      - dev
+    ports:
+      - "33077:2077"
+    environment:
+      BIND: 0.0.0.0
+      PORT: 2077
+      EXPOSED_HOST: http://localhost:33077
+    hostname: test_token_service
+    container_name: test_token_service
+  test_engine_service:
+    image: docker.io/cafienne/engine:1.1.38
+    labels:
+      component: cafienne-engine    
+    networks: 
+      - dev
+    ports:
+      - "33027:2027"
+      - "33082:8082"
+    hostname: test_engine_service
+    container_name: test_engine_service
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:2027/api-docs/swagger.json"]
+      start_period: 10s
+      interval: 10s
+      timeout: 2s
+      retries: 5
+    environment:
+      TestBaseUrl: http://workspace:12378
+    volumes:
+      - ../bin/run/cafienne/journal:/opt/cafienne/journal
+      - ../bin/run/cafienne/logs:/opt/cafienne/logs
+      - ../CaseFiles/Compiled:/opt/cafienne/definitions
+      - ./src/conf_inmemorydb:/opt/cafienne/conf
+      - ./src/bootstrap:/opt/cafienne/bootstrap
+  test_ide_service:
+    image: docker.io/cafienne/ide:latest
+    labels: 
+      component: test_ide_service
+    networks:
+      - dev
+    ports:
+      - "33081:2081"
+    hostname: test_ide_service
+    container_name: test_ide_service
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:2081/repository/list"]
+      start_period: 10s
+      interval: 10s
+      timeout: 2s
+      retries: 5
+    environment:
+      BACKEND_API_URL: ${BACKEND_API_URL:-http://test_engine_service:2027}
+    volumes:
+      - ../CaseFiles/Compiled:/usr/src/app/repository_deploy
+      - ../CaseFiles/PreCompiled:/usr/src/app/repository   
+  generic_ui:
+    image: cafienne/cafienne-ui:0.7.3
+    labels:
+      component: generic_ui
+    networks:
+      - dev
+    ports:
+      - "33080:80"
+    hostname: generic_ui
+    container_name: generic_ui
+    environment:
+      NODE_ENV: production
+      OIDC_URI: http://localhost:33077
+      OIDC_CLIENT_ID: generic_ui
+      CAFIENNE_URI: http://localhost:33027
+    healthcheck:
+      test: ["CMD", "curl", "-sS", "-o", "/dev/null", "http://generic_ui/index.html", ]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    depends_on:
+      test_engine_service:
+        condition: service_started
+        required: false
+      test_token_service:
+        condition: service_started
+        required: false
+
+networks:
+  dev: 
+    driver: bridge

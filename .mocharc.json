@@ -3,5 +3,10 @@
       "ts"
     ],
     "logVerbose ": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+      "timeout": 30000,
+    "require": [
+      "./support/ts-node-register.ts",
+      "./support/test-setup.ts"
+    ]
 }

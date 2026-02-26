@@ -1,4 +1,4 @@
-<definitions>
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
     <caseFileItemDefinition name="output" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="output.cfid">
         <property name="message" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
         <property name="success" type="http://www.omg.org/spec/CMMN/PropertyType/boolean"/>
@@ -19,31 +19,28 @@
                 <parameterMapping id="_xgszO_2" sourceRef="_xgszO_15" targetRef="_rmBM_task"/>
                 <parameterMapping id="_xgszO_8" sourceRef="_xgszO_17" targetRef="_0Dqq_caseId">
                     <transformation id="_xgszO_16">
-                        <body>
-                            <![CDATA[case.id]]>
-                        </body>
+                        <body><![CDATA[case.id]]></body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="_xgszO_13" sourceRef="_FU0v_responseCode" targetRef="_xgszO_18"/>
             </processTask>
             <userEvent id="ue__xgszO_0" name="NotifyDone"/>
         </casePlanModel>
+        <caseRoles/>
         <input id="_xgszO_5" name="task" bindingRef="_xgszO_6"/>
     </case>
     <process name="CallBack" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified" id="CallBack.process">
         <input id="_rmBM_task" name="operation"/>
         <input id="_0Dqq_caseId" name="caseId"/>
         <output id="_FU0v_responseCode" name="output"/>
-        <extensionElements>
+        <extensionElements mustUnderstand="false">
             <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition" async="true">
                 <url>${T(java.lang.System).getenv("TestBaseUrl")}/cmmn-wrapper?HandlerName=TestCallBack</url>
                 <method>POST</method>
-                <post-content>
-       {
+                <post-content>{
          "Task": "${operation}",
          "CaseInstanceId": "${caseId}"
-       }
-    </post-content>
+       }</post-content>
                 <http-headers>
                     <http-header name="Accept">*/*</http-header>
                     <http-header name="Content-Type">application/json</http-header>
@@ -51,18 +48,14 @@
                 <success>
                     <parameterMapping sourceRef="responsePayload" targetRef="output">
                         <transformation language="spel">
-                            <body>
-            map("success", true, "message", responsePayload)
-          </body>
+                            <body>map("success", true, "message", responsePayload)</body>
                         </transformation>
                     </parameterMapping>
                 </success>
                 <failure>
                     <parameterMapping sourceRef="responsePayload" targetRef="output">
                         <transformation language="spel">
-                            <body>
-            map("success", false, "message", responsePayload)
-          </body>
+                            <body>map("success", false, "message", responsePayload)</body>
                         </transformation>
                     </parameterMapping>
                 </failure>

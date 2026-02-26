@@ -1,0 +1,27 @@
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
+    <caseFileItemDefinition name="Mandatory" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="ConsentGroupTestCase_type_Mandatory.object"/>
+    <caseFileItemDefinition name="ConsentGroupTestCase" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="ConsentGroupTestCase.type"/>
+    <case id="ConsentGroupTestCase.case" name="ConsentGroupTestCase" expressionLanguage="spel">
+        <caseFileModel cafienne:typeRef="ConsentGroupTestCase.type">
+            <caseFileItem id="Mandatory" name="Mandatory" multiplicity="ExactlyOne" definitionRef="ConsentGroupTestCase_type_Mandatory.object"/>
+        </caseFileModel>
+        <casePlanModel id="cm__uihq6_0" name="ConsentGroupTestCase" autoComplete="true">
+            <planItem id="_uihq6_1" name="ConsentGroupInCaseTeam" definitionRef="ht__uihq6_1"/>
+            <humanTask id="ht__uihq6_1" name="ConsentGroupInCaseTeam" isBlocking="true"/>
+        </casePlanModel>
+        <caseRoles cafienne:caseTeamRef="ConsentGroupTestCase.caseteam">
+            <role id="cr__EDwic_0" name="Starter"/>
+            <role id="cr__EDwic_1" name="OneTasker"/>
+        </caseRoles>
+    </case>
+    <CMMNDI>
+        <CMMNDiagram>
+            <CMMNShape name="ConsentGroupTestCase" cmmnElementRef="cm__uihq6_0">
+                <Bounds x="20" y="20" width="800" height="500"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_uihq6_1">
+                <Bounds x="240" y="180" width="140" height="80"/>
+            </CMMNShape>
+        </CMMNDiagram>
+    </CMMNDI>
+</definitions>

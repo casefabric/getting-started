@@ -1,26 +1,23 @@
-<case id="CallMeBack.case" name="CallMeBack" expressionLanguage="spel" guid="_xgszO">
+<case xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="CallMeBack.case" name="CallMeBack" expressionLanguage="spel" guid="_xgszO">
     <caseFileModel>
         <caseFileItem id="_xgszO_3" name="output" multiplicity="ExactlyOne" definitionRef="output.cfid"/>
         <caseFileItem id="_xgszO_6" name="task" multiplicity="ExactlyOne" definitionRef="task.cfid"/>
     </caseFileModel>
     <casePlanModel id="cm__xgszO_0" name="CallMeBack" autoComplete="true">
-        <planItem id="pi_pt__xgszO_0" name="CallBack to MockServer" definitionRef="pt__xgszO_0"/>
-        <planItem id="pi_ue__xgszO_0" name="NotifyDone" definitionRef="ue__xgszO_0"/>
-        <processTask id="pt__xgszO_0" name="CallBack to MockServer" isBlocking="true" processRef="CallBack.process">
+        <processTask id="pi_pt__xgszO_0" name="CallBack to MockServer" isBlocking="true" processRef="CallBack.process">
             <inputs id="_xgszO_15" name="task" bindingRef="_xgszO_6"/>
             <inputs id="_xgszO_17" name="caseId"/>
             <outputs id="_xgszO_18" name="output" bindingRef="_xgszO_3"/>
             <parameterMapping id="_xgszO_2" sourceRef="_xgszO_15" targetRef="_rmBM_task"/>
             <parameterMapping id="_xgszO_8" sourceRef="_xgszO_17" targetRef="_0Dqq_caseId">
                 <transformation id="_xgszO_16">
-                    <body>
-                        <![CDATA[case.id]]>
-                    </body>
+                    <body><![CDATA[case.id]]></body>
                 </transformation>
             </parameterMapping>
             <parameterMapping id="_xgszO_13" sourceRef="_FU0v_responseCode" targetRef="_xgszO_18"/>
         </processTask>
-        <userEvent id="ue__xgszO_0" name="NotifyDone"/>
+        <userEvent id="pi_ue__xgszO_0" name="NotifyDone"/>
     </casePlanModel>
+    <caseRoles/>
     <input id="_xgszO_5" name="task" bindingRef="_xgszO_6"/>
 </case>

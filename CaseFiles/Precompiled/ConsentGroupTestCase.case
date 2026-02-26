@@ -1,0 +1,7 @@
+<case xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="ConsentGroupTestCase.case" name="ConsentGroupTestCase" expressionLanguage="spel" guid="_uihq6">
+    <caseFileModel typeRef="ConsentGroupTestCase.type"/>
+    <casePlanModel id="cm__uihq6_0" name="ConsentGroupTestCase" autoComplete="true">
+        <humanTask id="_uihq6_1" name="ConsentGroupInCaseTeam" isBlocking="true"/>
+    </casePlanModel>
+    <caseRoles caseTeamRef="ConsentGroupTestCase.caseteam"/>
+</case>

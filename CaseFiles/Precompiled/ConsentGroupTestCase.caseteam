@@ -1,0 +1,7 @@
+<caseteam xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="ConsentGroupTestCase.caseteam" name="ConsentGroupTestCase">
+    <documentation textFormat="text/plain">
+        <text><![CDATA[ConsentGroupTestCase]]></text>
+    </documentation>
+    <role id="cr__EDwic_0" name="Starter"/>
+    <role id="cr__EDwic_1" name="OneTasker"/>
+</caseteam>

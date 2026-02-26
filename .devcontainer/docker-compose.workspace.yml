@@ -1,12 +1,14 @@
 name: cafienne_pg
 services:
   workspace:
-    image: wjgerritsen/cafienne-dev:latest
+    build:
+      dockerfile: ./Dockerfile
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ../..:/workspaces/getting-started
+      - ..:/workspaces/getting-started
     ports:
       - 12378
     tty: true           # <- keeps container running
     networks:
       - dev
+    # user: node

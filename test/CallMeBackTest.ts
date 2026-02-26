@@ -7,10 +7,9 @@ import MockServer from "@cafienne/typescript-client/mock/mockserver";
 import PostMock from "@cafienne/typescript-client/mock/postmock";
 import CasePlanService from "@cafienne/typescript-client/service/case/caseplanservice";
 import CaseService from "@cafienne/typescript-client/service/case/caseservice";
-import RepositoryService from "@cafienne/typescript-client/service/case/repositoryservice";
 import assertCaseFileContent from "@cafienne/typescript-client/test/caseassertions/file";
 import State from '@cafienne/typescript-client/cmmn/state';
-import { CreateMockServer as CreateMockServer } from "./CafienneSetup";
+import { CreateMockServer } from "./CafienneSetup";
 import TestTenant from "./testtenant";
 
 // global setup
@@ -19,7 +18,7 @@ const callMeBackDefinition = 'CallmeBack.xml';
 
 const testTenant = new TestTenant();
 const tenant = testTenant.name;
-const partner = testTenant.partner;
+const partner = testTenant.admin;
 const employee = testTenant.employee;
 const SuccessId = "Success";
 const NotifyBackId = "Notify";
@@ -32,8 +31,7 @@ async function setupMockServer(mockServer: MockServer) {
             {
                   call.res.status(200).end();
             } 
-            if (post.Task == NotifyBackId
-            )
+            else if (post.Task == NotifyBackId)
             {
                 var caseInstanceId = post.CaseInstanceId;
                 var event = await assertPlanItem(employee, caseInstanceId, 'NotifyDone');

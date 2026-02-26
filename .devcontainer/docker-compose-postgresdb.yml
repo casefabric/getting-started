@@ -1,0 +1,167 @@
+name: cafienne_pg
+services:
+  test_token_service:
+    image: spectare/fakeidp:latest
+    labels:
+      component: idp-test-service-for-cafienne
+    networks: 
+      - dev
+    ports:
+      - "33077:2077"
+    environment:
+      BIND: 0.0.0.0
+      PORT: 2077
+      EXPOSED_HOST: http://localhost:33077
+    hostname: test_token_service
+    container_name: test_token_service
+  test_engine_service:
+    image: docker.io/cafienne/engine:1.1.38
+    labels:
+      component: cafienne-engine    
+    networks: 
+      - dev
+    ports:
+      - "33027:2027"
+    hostname: test_engine_service
+    container_name: test_engine_service
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:2027/api-docs/swagger.json"]
+      start_period: 10s
+      interval: 10s
+      timeout: 2s
+      retries: 5
+    environment:
+        TestBaseUrl: http://workspace:12378
+        EVENT_DB_URL: ${EVENT_DB_URL:-jdbc:postgresql://cafienne-event-db:5432/cafienne-eventstore?reWriteBatchedInserts=true}    
+        EVENT_DB_PROFILE: ${EVENT_DB_PROFILE:-slick.jdbc.PostgresProfile$}
+        EVENT_DB_DRIVER: ${EVENT_DB_DRIVER:-org.postgresql.Driver}
+        EVENT_DB_USER: ${EVENT_DB_USER:-postgresuser}
+        EVENT_DB_PASSWORD: ${EVENT_DB_PASSWORD:-mysecret}
+        PROJECTION_DB_PROFILE: ${PROJECTION_DB_PROFILE:-slick.jdbc.PostgresProfile$}
+        PROJECTION_DB_DRIVER: ${PROJECTION_DB_DRIVER:-org.postgresql.Driver}
+        PROJECTION_DB_USER: ${PROJECTION_DB_USER:-postgresuser}
+        PROJECTION_DB_PASSWORD: ${PROJECTION_DB_PASSWORD:-mysecret}
+        PROJECTION_DB_URL: ${PROJECTION_DB_URL:-jdbc:postgresql://cafienne-query-db:5432/cafienne-query?reWriteBatchedInserts=true}
+    volumes:
+      - ../bin/run/cafienne/journal:/opt/cafienne/journal
+      - ../bin/run/cafienne/logs:/opt/cafienne/logs
+      - ../CaseFiles/Compiled:/opt/cafienne/definitions
+      - ./src/conf_postgresdb:/opt/cafienne/conf
+      - ./src/bootstrap:/opt/cafienne/bootstrap
+    depends_on:
+      cafienne-query-db:
+        condition: service_healthy
+      cafienne-event-db:
+        condition: service_healthy
+  test_ide_service:
+    image: docker.io/cafienne/ide:latest
+    labels: 
+      component: test_ide_service
+    networks:
+      - dev
+    ports:
+      - "33081:2081"
+    hostname: test_ide_service
+    container_name: test_ide_service
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:2081/repository/list"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      BACKEND_API_URL: ${BACKEND_API_URL:-http://test_engine_service:2027}
+    volumes:
+      - ../bin/run/cafienne/ide/repository_deploy:/usr/src/app/repository_deploy
+      - ../CaseFiles/PreCompiled:/usr/src/app/repository   
+  generic_ui:
+    image: cafienne/cafienne-ui:0.7.3
+    labels:
+      component: generic_ui
+    networks:
+      - dev
+    ports:
+      - "33080:80"
+    hostname: generic_ui
+    container_name: generic_ui
+    environment:
+      NODE_ENV: production
+      OIDC_URI: http://localhost:33077
+      OIDC_CLIENT_ID: generic_ui
+      CAFIENNE_URI: http://localhost:33027
+    healthcheck:
+      test: ["CMD", "curl", "-sS", "-o", "/dev/null", "http://generic_ui/index.html", ]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    depends_on:
+      test_engine_service:
+        condition: service_started
+        required: false
+      test_token_service:
+        condition: service_started
+        required: false
+  cafienne-event-db:
+    image: postgres:12.1-alpine
+    networks:
+      - dev
+    expose:
+      - 5432
+    ports:
+      - "33031:5432"
+    hostname: cafienne-event-db
+    container_name: cafienne-event-db
+    environment:
+      POSTGRES_USER: postgresuser
+      POSTGRES_PASSWORD: mysecret
+      POSTGRES_DB: cafienne-eventstore
+    volumes:
+      - ../bin/run/cafienne/postgres-event-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready -d cafienne-event-db -h localhost -U postgresuser
+      interval: 5s
+      timeout: 30s
+      retries: 10
+      start_interval: 1s
+      start_period: 30s  
+  cafienne-query-db:
+    image: postgres:12.1-alpine
+    networks:
+      - dev
+    expose:
+      - 5432
+    ports:
+      - "33030:5432"
+    hostname: cafienne-query-db
+    container_name: cafienne-query-db
+    environment:
+      POSTGRES_USER: postgresuser
+      POSTGRES_PASSWORD: mysecret
+      POSTGRES_DB: cafienne-query
+    volumes:
+      - ../bin/run/cafienne/postgres-query-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready -d cafienne-query-db -h localhost -U postgresuser
+      interval: 5s
+      timeout: 30s
+      retries: 10
+      start_interval: 1s
+      start_period: 30s  
+  pgadmin4:
+    image: dpage/pgadmin4:2024-03-04-1
+    networks:
+      - dev
+    expose:
+      - 80
+    ports:
+      - 33028:80
+    hostname: pgadmin4
+    container_name: pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=user@domain.com
+      - PGADMIN_DEFAULT_PASSWORD=SuperSecret
+    volumes:
+      - ./src/conf_postgresdb/servers.json:/pgadmin4/servers.json
+networks:
+  dev: 
+    driver: bridge

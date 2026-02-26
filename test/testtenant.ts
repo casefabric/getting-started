@@ -10,14 +10,18 @@ const rolePartner = 'Partner';
 const roleEmployee = 'Employee';
  
 export default class TestTenant {
-    partner = new TenantOwner('partner-pete', [rolePartner], 'Pete', 'pete@all.com');
+    name: string = 'Test-Tenant2';
+    platformAdmin: User = new User('admin');
+
+    admin = new TenantOwner('partner-pete', [rolePartner], 'Pete', 'pete@all.com');
     employee = new TenantUser('employee-eddy', [roleEmployee], 'Eddy', 'no email address');
 
-    tenant: Tenant = new Tenant(this.name, [this.partner, this.employee]);
+    tenant: Tenant;
 
-    constructor(
-        public readonly name: string = 'Test-Tenant', 
-        public platformAdmin: User = new User('admin')) {
+    constructor(name: string = 'Test-Tenant2', platformAdmin: User = new User('admin')) {
+        this.name = name;
+        this.platformAdmin = platformAdmin;
+        this.tenant = new Tenant(this.name, [this.admin, this.employee]);
     }
 
     /**
@@ -26,7 +30,7 @@ export default class TestTenant {
     async create() {
         await this.platformAdmin.login();
         await PlatformService.createTenant(this.platformAdmin, this.tenant);
-        await this.partner.login();
+        await this.admin.login();
         await this.employee.login();
     }
 }
