@@ -1,0 +1,39 @@
+<humantask xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
+    <cafienne:implementation name="Greet" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition">
+        <input id="Greeting__AOil" name="Greeting" typeRef="greeting.type"/>
+        <task-model>{
+  "schema": {
+    "title": "Greet",
+    "type": "object",
+    "properties": { 
+      "Greeting": {
+        "title": "Greeting",
+        "$ref": "#/definitions/greeting"
+      }
+    },
+    "definitions": {
+      "greeting": {
+        "$id": "greeting",
+        "type": "object",
+        "properties": {
+          "To": {
+            "$id": "sp__ZPMUj_0",
+            "title": "To",
+            "type": "string"
+          },
+          "Message": {
+            "$id": "sp__ZPMUj_1",
+            "title": "Message",
+            "type": "string"
+          }
+        },
+        "required": [
+          "To",
+          "Message"
+        ]
+      }
+    }
+  }
+}</task-model>
+    </cafienne:implementation>
+</humantask>

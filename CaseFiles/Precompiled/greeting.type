@@ -1,0 +1,6 @@
+<type xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="greeting.type" name="greeting">
+    <schema>
+        <property id="sp__ZPMUj_0" name="To" type="string" multiplicity="ExactlyOne"/>
+        <property id="sp__ZPMUj_1" name="Message" type="string" multiplicity="ExactlyOne"/>
+    </schema>
+</type>

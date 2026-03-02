@@ -1,12 +1,26 @@
 <definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
-    <caseFileItemDefinition name="greeting" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="greeting.cfid"/>
+    <caseFileItemDefinition name="case_HelloWorld" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="case_HelloWorld.type"/>
+    <caseFileItemDefinition name="greeting" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="greeting.type">
+        <property name="To" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    </caseFileItemDefinition>
     <case id="HelloWorld.case" name="HelloWorld" expressionLanguage="spel">
-        <caseFileModel>
-            <caseFileItem id="_rzOCk_1" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid"/>
+        <caseFileModel cafienne:typeRef="case_HelloWorld.type">
+            <caseFileItem id="Greeting" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.type"/>
         </caseFileModel>
         <casePlanModel id="cm__rzOCk_0" name="HelloWorld" autoComplete="true">
             <planItem id="pi_pt__rzOCk_0" name="Calculation" definitionRef="pt__rzOCk_0"/>
+            <planItem id="_rzOCk_5" name="Greet" definitionRef="ht__rzOCk_5"/>
             <processTask id="pt__rzOCk_0" name="Calculation" isBlocking="true" processRef="CalculationProcess.process"/>
+            <humanTask id="ht__rzOCk_5" name="Greet" isBlocking="true">
+                <inputs id="_rzOCk_12" name="Greeting" bindingRef="Greeting"/>
+                <extensionElements mustUnderstand="false">
+                    <cafienne:implementation name="Greet" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="Greet.humantask">
+                        <input id="Greeting__AOil" name="Greeting" typeRef="greeting.type"/>
+                        <parameterMapping id="_rzOCk_7" sourceRef="_rzOCk_12" targetRef="Greeting__AOil"/>
+                    </cafienne:implementation>
+                </extensionElements>
+            </humanTask>
         </casePlanModel>
         <caseRoles/>
     </case>
@@ -26,7 +40,10 @@
                 <Bounds x="20" y="20" width="800" height="500"/>
             </CMMNShape>
             <CMMNShape cmmnElementRef="pi_pt__rzOCk_0">
-                <Bounds x="250" y="180" width="140" height="80"/>
+                <Bounds x="210" y="110" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_rzOCk_5">
+                <Bounds x="210" y="280" width="140" height="80"/>
             </CMMNShape>
         </CMMNDiagram>
     </CMMNDI>
